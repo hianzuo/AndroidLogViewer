@@ -28,6 +28,25 @@ public class LogFilter {
         // Log.d(TAG, "tag=" + tag);
     }
 
+    public boolean match(LogInfo log, boolean isShowExtra) {
+        try {
+            if (null == tag || " ".equals(tag)) return true;
+            if (tag.contains("|")) {
+                String[] split = tag.split("|");
+                for (String t : split) {
+                    if (log.content.contains(t)) {
+                        return true;
+                    }
+                }
+            } else if (log.content.contains(tag)) {
+                return true;
+            }
+        } catch (Exception e) {
+            return false;
+        }
+        return false;
+    }
+
     public boolean consume(LogInfo log, boolean isShowExtra) {
         try {
             if (log.tag.contains("DEBUG") || log.tag.contains("libc")) {
@@ -37,7 +56,7 @@ public class LogFilter {
             if (!isShowExtra && (log.tag == null || log.tag.isEmpty())) {
                 return true;
             }
-            
+
             if (pid != null && !log.pid.equals(pid)) {
                 return true;
             }

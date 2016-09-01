@@ -92,7 +92,8 @@ public class AndroidLogViewer extends Shell {
                         isReadingLines = true;
                         try {
                             Thread.sleep(100);
-                        } catch (InterruptedException e) {}
+                        } catch (InterruptedException e) {
+                        }
                     }
                     LogInfo info = new LogInfo(line, i++);
                     synchronized (this) {
@@ -134,7 +135,8 @@ public class AndroidLogViewer extends Shell {
             while (!isReadingLines) {
                 try {
                     Thread.sleep(100);
-                } catch (InterruptedException e) {}
+                } catch (InterruptedException e) {
+                }
             }
         }
 
@@ -155,7 +157,8 @@ public class AndroidLogViewer extends Shell {
     }
 
     private static class LogServerThread implements Runnable {
-        public LogServerThread() {}
+        public LogServerThread() {
+        }
 
         @Override
         public void run() {
@@ -215,7 +218,7 @@ public class AndroidLogViewer extends Shell {
 
     /**
      * Launch the application.
-     * 
+     *
      * @param args
      */
     public static void main(String args[]) {
@@ -240,6 +243,7 @@ public class AndroidLogViewer extends Shell {
                 }
             }
         } catch (Exception e) {
+            e.printStackTrace();
             Log.e(TAG, "exception in main " + e.getLocalizedMessage());
         }
         System.exit(0);
@@ -261,7 +265,9 @@ public class AndroidLogViewer extends Shell {
 
     private List<LogInfo> mFileLogs = new LinkedList<LogInfo>();
 
-    /** The final log items that will be shown in the tabel **/
+    /**
+     * The final log items that will be shown in the tabel
+     **/
     private List<LogInfo> mFilteredLogs = new LinkedList<LogInfo>();
 
     private LogListener mLogLsnr = new LogListener() {
@@ -297,7 +303,7 @@ public class AndroidLogViewer extends Shell {
 
     private TableColumn tblclmnContent;
 
-    private TableColumn tblclmnIndex;
+ /*   private TableColumn tblclmnIndex;
 
     private TableColumn tblclmnLevel;
 
@@ -307,12 +313,14 @@ public class AndroidLogViewer extends Shell {
 
     private TableColumn tblclmnTid;
 
-    private TableColumn tblclmnTime;
+    private TableColumn tblclmnTime;*/
 
     private Text text;
     private Button btnCheckButton;
 
-    /** Update the client's log count thread **/
+    /**
+     * Update the client's log count thread
+     **/
     private Thread mUpdateClientsCountThread;
 
     private LogClient mCurClient;
@@ -328,7 +336,7 @@ public class AndroidLogViewer extends Shell {
 
     /**
      * Create the shell.
-     * 
+     *
      * @param display
      */
     public AndroidLogViewer(Display display) {
@@ -374,9 +382,7 @@ public class AndroidLogViewer extends Shell {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 int index = mFilterListView.getSelectionIndex();
-                if (index > 0) {
-                    createDelFilterDialog(index - 1);
-                }
+                createDelFilterDialog(index - 1);
             }
         });
         butnDelFilter.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
@@ -387,9 +393,7 @@ public class AndroidLogViewer extends Shell {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 int index = mFilterListView.getSelectionIndex();
-                if (index > 0) {
-                    createEditFilterDialog(index - 1);
-                }
+                createEditFilterDialog(index);
             }
         });
         butnEditFilter.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
@@ -421,7 +425,8 @@ public class AndroidLogViewer extends Shell {
         text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
         text.addKeyListener(new KeyListener() {
             @Override
-            public void keyPressed(KeyEvent e) {}
+            public void keyPressed(KeyEvent e) {
+            }
 
             @Override
             public void keyReleased(KeyEvent e) {
@@ -471,7 +476,8 @@ public class AndroidLogViewer extends Shell {
         cbLevel.select(0);
         cbLevel.addSelectionListener(new SelectionListener() {
             @Override
-            public void widgetDefaultSelected(SelectionEvent e) {}
+            public void widgetDefaultSelected(SelectionEvent e) {
+            }
 
             @Override
             public void widgetSelected(SelectionEvent e) {
@@ -522,7 +528,7 @@ public class AndroidLogViewer extends Shell {
         // table.addListener(SWT.PaintItem, paintListener);
         // table.addListener(SWT.EraseItem, paintListener);
 
-        tblclmnIndex = new TableColumn(table, SWT.NONE);
+       /* tblclmnIndex = new TableColumn(table, SWT.NONE);
         tblclmnIndex.setWidth(Preference.getInt("indexColumnW", 60));
         tblclmnIndex.setText("index");
         tblclmnIndex.addControlListener(createControlLsnr("indexColumnW", tblclmnIndex));
@@ -551,7 +557,7 @@ public class AndroidLogViewer extends Shell {
         tblclmnTag.setWidth(Preference.getInt("tagColumnW", 108));
         tblclmnTag.setText("Tag");
         tblclmnTag.addControlListener(createControlLsnr("tagColumnW", tblclmnTag));
-
+*/
         tblclmnContent = new TableColumn(table, SWT.NONE);
         tblclmnContent.setWidth(Preference.getInt("contentColumnW", 10000));
         tblclmnContent.setText("Content");
@@ -594,14 +600,14 @@ public class AndroidLogViewer extends Shell {
             sb.append(f.name);
             sb.append(',');
             sb.append(f.tag);
-            sb.append(' ');
+            sb.append("###");
         }
         Preference.setString("mFilterConfigs", sb.toString());
     }
 
     private void loadFilters() {
         String s = Preference.getString("mFilterConfigs", "");
-        for (String seg : s.split(" ")) {
+        for (String seg : s.split("###")) {
             if (!seg.isEmpty()) {
                 String[] segs = seg.split(",");
                 FilterConfig f = new FilterConfig();
@@ -637,7 +643,6 @@ public class AndroidLogViewer extends Shell {
 
     private void updateFilterList() {
         mFilterListView.removeAll();
-        mFilterListView.add("All messages");
         for (FilterConfig f : mFilterConfigs) {
             mFilterListView.add(f.name);
         }
@@ -651,7 +656,8 @@ public class AndroidLogViewer extends Shell {
                     updateClientsView();
                     try {
                         Thread.sleep(1000);
-                    } catch (InterruptedException e) {}
+                    } catch (InterruptedException e) {
+                    }
                 }
             }
         });
@@ -690,7 +696,8 @@ public class AndroidLogViewer extends Shell {
     private ControlListener createControlLsnr(final String key, final TableColumn tableColumn) {
         return new ControlListener() {
             @Override
-            public void controlMoved(ControlEvent e) {}
+            public void controlMoved(ControlEvent e) {
+            }
 
             @Override
             public void controlResized(ControlEvent e) {
@@ -701,13 +708,16 @@ public class AndroidLogViewer extends Shell {
 
     private DropTarget createDropTarget() {
         DropTarget dropTarget = new DropTarget(table, DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_LINK);
-        dropTarget.setTransfer(new Transfer[] { FileTransfer.getInstance() });
+        dropTarget.setTransfer(new Transfer[]{FileTransfer.getInstance()});
         dropTarget.addDropListener(new DropTargetAdapter() {
-            public void dragEnter(DropTargetEvent event) {}
+            public void dragEnter(DropTargetEvent event) {
+            }
 
-            public void dragLeave(DropTargetEvent event) {}
+            public void dragLeave(DropTargetEvent event) {
+            }
 
-            public void dragOver(DropTargetEvent event) {}
+            public void dragOver(DropTargetEvent event) {
+            }
 
             public void drop(DropTargetEvent event) {
                 String[] files = (String[]) event.data;
@@ -817,8 +827,8 @@ public class AndroidLogViewer extends Shell {
     private LogFilter getCurLogFilter() {
         String regx = text.getText();
         int index = mFilterListView.getSelectionIndex();
-        if (index > 0) {
-            FilterConfig f = mFilterConfigs.get(index - 1);
+        if(index>-1){
+            FilterConfig f = mFilterConfigs.get(index);
             regx += "tag:" + f.tag + " ";
         }
         return new LogFilter(LogInfo.levelStrings[cbLevel.getSelectionIndex()], regx);
@@ -879,19 +889,20 @@ public class AndroidLogViewer extends Shell {
             loadTableByCurrentFilter();
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {}
+        } finally {
+        }
     }
 
     /**
      * Clear the table item and load log items filtered by the current filter.
-     * 
+     *
      * @param filter
      */
     public void loadTable(LogFilter filter) {
         table.removeAll();
         mFilteredLogs.clear();
         for (final LogInfo log : getLogSource()) {
-            if (!filter.consume(log, isShowExtra)) {
+            if (filter.match(log, isShowExtra)) {
                 mFilteredLogs.add(log);
             }
         }
@@ -973,7 +984,7 @@ public class AndroidLogViewer extends Shell {
 
     /**
      * Change log source, the source can be socket clients or file lines
-     * 
+     *
      * @param logs
      */
     private void setLogSource(List<LogInfo> logs) {
@@ -982,7 +993,7 @@ public class AndroidLogViewer extends Shell {
 
     protected void showLog(TableItem ti, int index, LogInfo info) {
         ti.setForeground(getLevelColor(info.logLevel));
-        ti.setText(new String[] { "" + index, info.logLevel, info.time, info.pid, info.tid, info.tag, info.content });
+        ti.setText(new String[]{ /*"" + index, info.logLevel, info.time, info.pid, info.tid, info.tag, */info.content});
         ti.setData(info);
     }
 
@@ -1020,12 +1031,12 @@ public class AndroidLogViewer extends Shell {
 
     /**
      * Scroll the table to the bottom when a new item is added.
-     * 
+     *
      * @param log
      */
     private void onTableLogAdded(LogInfo log) {
         LogFilter filter = getCurLogFilter();
-        if (!filter.consume(log, isShowExtra)) {
+        if (filter.match(log, isShowExtra)) {
             mFilteredLogs.add(log);
         }
         table.setItemCount(mFilteredLogs.size());
