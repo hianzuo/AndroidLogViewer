@@ -1,3 +1,3 @@
 @echo off
 
-start javaw -jar AndroidLogViewer.jar
+start javaw -jar AndroidLogViewer32.jar

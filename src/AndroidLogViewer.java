@@ -223,6 +223,9 @@ public class AndroidLogViewer extends Shell {
      */
     public static void main(String args[]) {
         try {
+            for (String arg : args) {
+                System.out.println(arg);
+            }
             display = Display.getDefault();
             if (isServerPortInUse()) {
                 MessageBox msg = new MessageBox(new Shell());
