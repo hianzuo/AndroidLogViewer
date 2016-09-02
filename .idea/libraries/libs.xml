@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="libs">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/libs/swt.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/commons-io-2.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/MyJavaLib.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
